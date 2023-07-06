@@ -1,0 +1,35 @@
+package com.example.phonecontacts.service.impl;
+
+import com.example.phonecontacts.dto.UserDTO;
+import com.example.phonecontacts.model.User;
+import com.example.phonecontacts.repository.UserRepository;
+import com.example.phonecontacts.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public String register(UserDTO userDTO) {
+        if (userRepository.findByLogin(userDTO.getLogin())==null) {
+            log.info("No such user in DB");
+            User user=new User(userDTO.getLogin(), passwordEncoder.encode(userDTO.getPass()));
+            userRepository.save(user);
+            return user.getLogin();
+        } else {
+            log.info("User already exists");
+            return "User already exists";
+        }
+    }
+}

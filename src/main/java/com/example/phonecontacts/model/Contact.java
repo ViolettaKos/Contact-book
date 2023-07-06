@@ -23,4 +23,5 @@ public class Contact {
 
     //One contact may have multiple phone numbers
     private String telephone;
+
 }
