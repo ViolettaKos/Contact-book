@@ -8,6 +8,7 @@ import com.example.phonecontacts.model.User;
 import com.example.phonecontacts.service.ContactService;
 import com.example.phonecontacts.service.TokenService;
 import com.example.phonecontacts.service.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +52,7 @@ public class BasicActionsController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addContact(@RequestParam String token,
-                                       @RequestBody ContactDTO contactDTO) {
+                                       @Valid @RequestBody ContactDTO contactDTO) throws ServiceException {
         return ResponseEntity.ok(contatService.add(contactDTO, token));
     }
 }
