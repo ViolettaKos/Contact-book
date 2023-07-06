@@ -26,6 +26,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Contact> contactList;
 
+    private String token;
+
     public User(String login, String password) {
         this.login=login;
         this.password=password;

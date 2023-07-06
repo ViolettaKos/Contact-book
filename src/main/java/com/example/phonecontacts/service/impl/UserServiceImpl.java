@@ -45,4 +45,12 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+    @Override
+    public User update(UserDTO userDTO, String token) {
+        User user=userRepository.findByLogin(userDTO.getLogin());
+        user.setToken(token);
+        userRepository.save(user);
+        return user;
+    }
 }
