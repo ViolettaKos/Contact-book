@@ -25,6 +25,7 @@ public class Contact {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     // One contact may have multiple emails
