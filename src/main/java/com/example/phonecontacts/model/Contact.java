@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,11 +19,22 @@ public class Contact {
     @Column(name = "contact_id", unique = true, nullable = false)
     private long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private String name;
+
     // One contact may have multiple emails
-    private String email;
+    @ElementCollection
+    @CollectionTable(name = "emails", joinColumns = @JoinColumn(name = "contact_id"))
+    @Column(name = "email", nullable = false)
+    private Set<String> emails;
 
     //One contact may have multiple phone numbers
-    private String telephone;
+    @ElementCollection
+    @CollectionTable(name = "phones", joinColumns = @JoinColumn(name = "contact_id"))
+    @Column(name = "phone", nullable = false)
+    private Set<String> phones;
 
 }

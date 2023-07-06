@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -20,6 +22,9 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String login;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Contact> contactList;
 
     public User(String login, String password) {
         this.login=login;

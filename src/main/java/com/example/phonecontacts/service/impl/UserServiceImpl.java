@@ -1,6 +1,9 @@
 package com.example.phonecontacts.service.impl;
 
 import com.example.phonecontacts.dto.UserDTO;
+import com.example.phonecontacts.exception.DuplicatedLoginException;
+import com.example.phonecontacts.exception.ServiceException;
+import com.example.phonecontacts.exception.UserNotFoundException;
 import com.example.phonecontacts.model.User;
 import com.example.phonecontacts.repository.UserRepository;
 import com.example.phonecontacts.service.UserService;
@@ -21,15 +24,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String register(UserDTO userDTO) {
+    public String register(UserDTO userDTO) throws ServiceException {
         if (userRepository.findByLogin(userDTO.getLogin())==null) {
             log.info("No such user in DB");
             User user=new User(userDTO.getLogin(), passwordEncoder.encode(userDTO.getPass()));
             userRepository.save(user);
             return user.getLogin();
         } else {
-            log.info("User already exists");
-            return "User already exists";
+            log.error("User already exists");
+            throw new DuplicatedLoginException();
         }
+    }
+
+    @Override
+    public User findByLogin(String login) throws ServiceException {
+        User user=userRepository.findByLogin(login);
+        if (user==null) {
+            log.error("No user with such username");
+            throw new UserNotFoundException();
+        }
+        return user;
     }
 }
