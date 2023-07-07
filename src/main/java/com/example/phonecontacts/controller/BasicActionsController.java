@@ -22,7 +22,6 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/basic")
 @RestController
 public class BasicActionsController {
 
