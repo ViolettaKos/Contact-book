@@ -25,9 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String register(UserDTO userDTO) throws ServiceException {
-        if (userRepository.findByLogin(userDTO.getLogin())==null) {
+        if (userRepository.findByLogin(userDTO.getLogin()) == null) {
             log.info("No such user in DB");
-            User user=new User(userDTO.getLogin(), passwordEncoder.encode(userDTO.getPass()));
+            User user = new User(userDTO.getLogin(), passwordEncoder.encode(userDTO.getPass()));
             userRepository.save(user);
             return user.getLogin();
         } else {
@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByLogin(String login) throws ServiceException {
-        User user=userRepository.findByLogin(login);
-        if (user==null) {
+        User user = userRepository.findByLogin(login);
+        if (user == null) {
             log.error("No user with such username");
             throw new UserNotFoundException();
         }
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(UserDTO userDTO, String token) {
-        User user=userRepository.findByLogin(userDTO.getLogin());
+        User user = userRepository.findByLogin(userDTO.getLogin());
         user.setToken(token);
         userRepository.save(user);
         return user;

@@ -39,14 +39,13 @@ public class BasicActionsController {
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> logIn(@RequestBody UserDTO userDTO) {
         try {
-            User user=userService.findByLogin(userDTO.getLogin());
-            if(passwordEncoder.matches(userDTO.getPass(), user.getPassword())) {
-                String token=tokenService.randomToken(user.getLogin());
+            User user = userService.findByLogin(userDTO.getLogin());
+            if (passwordEncoder.matches(userDTO.getPass(), user.getPassword())) {
+                String token = tokenService.randomToken(user.getLogin());
                 user.setToken(token);
                 userService.update(userDTO, token);
                 return ResponseEntity.ok(new TokenDTO(token));
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
         } catch (ServiceException e) {
@@ -57,20 +56,20 @@ public class BasicActionsController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addContact(@RequestParam String token,
-                                       @Valid @RequestBody ContactDTO contactDTO) throws ServiceException {
+                                             @Valid @RequestBody ContactDTO contactDTO) throws ServiceException {
         return ResponseEntity.ok(contactService.add(contactDTO, token));
     }
 
     @PostMapping("/edit")
     public ResponseEntity<String> editContact(@RequestParam String token,
-                                             @Valid @RequestBody ContactDTO contactDTO,
+                                              @Valid @RequestBody ContactDTO contactDTO,
                                               @RequestParam String prevName) throws ServiceException {
         return ResponseEntity.ok(contactService.edit(contactDTO, token, prevName));
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteContact(@RequestParam String token,
-                                             @Valid @RequestBody ContactDTO contactDTO) throws ServiceException {
+                                                @Valid @RequestBody ContactDTO contactDTO) throws ServiceException {
         return ResponseEntity.ok(contactService.delete(contactDTO, token));
     }
 

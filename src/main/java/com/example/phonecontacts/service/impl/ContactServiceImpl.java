@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -21,11 +20,12 @@ public class ContactServiceImpl implements ContactService {
 
     private final UserRepository userRepository;
     private final ContactRepository contactRepository;
+
     @Override
     public String add(ContactDTO contactDTO, String token) throws ServiceException {
-        User user=userRepository.findByToken(token);
-        if (user!=null) {
-            Contact contact=new Contact();
+        User user = userRepository.findByToken(token);
+        if (user != null) {
+            Contact contact = new Contact();
             contact.setName(contactDTO.getName())
                     .setEmails(contactDTO.getEmails())
                     .setPhones(contactDTO.getPhones())
@@ -39,8 +39,8 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public List<Contact> getAllContacts(String token) {
-        User user=userRepository.findByToken(token);
-        if (user!=null) {
+        User user = userRepository.findByToken(token);
+        if (user != null) {
             return contactRepository.findAll();
         } else {
             return Collections.emptyList();
@@ -49,9 +49,9 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public String edit(ContactDTO contactDTO, String token, String prevName) throws ServiceException {
-        User user=userRepository.findByToken(token);
-        if (user!=null) {
-            Contact prevContact=contactRepository.findByUserAndAndName(user, prevName);
+        User user = userRepository.findByToken(token);
+        if (user != null) {
+            Contact prevContact = contactRepository.findByUserAndAndName(user, prevName);
             prevContact.setName(contactDTO.getName())
                     .setEmails(contactDTO.getEmails())
                     .setPhones(contactDTO.getPhones());
@@ -64,9 +64,9 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public String delete(ContactDTO contactDTO, String token) throws ServiceException {
-        User user=userRepository.findByToken(token);
-        if (user!=null) {
-            Contact prevContact=contactRepository.findByUserAndAndName(user, contactDTO.getName());
+        User user = userRepository.findByToken(token);
+        if (user != null) {
+            Contact prevContact = contactRepository.findByUserAndAndName(user, contactDTO.getName());
             contactRepository.delete(prevContact);
         } else {
             throw new UserNotFoundException();
